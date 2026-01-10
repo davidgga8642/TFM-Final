@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TFM – Panel Empresa</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="admin.html">TFM Empresas</a>
+      <div class="actions">
+        <span id="who" class="small"></span>
+        <a class="btn" href="index.html">Salir</a>
+      </div>
+    </nav>
+    <main class="container">
+      <div class="tabs">
+        <button class="tab active" data-tab="dashboard">Dashboard</button>
+        <button class="tab" data-tab="employees">Empleados</button>
+        <button class="tab" data-tab="finance">Finanzas</button>
+        <button class="tab" data-tab="expenses">Gastos</button>
+        <button class="tab" data-tab="requests">Solicitudes jornada</button>
+        <button class="tab" data-tab="vacations">Solicitudes vacaciones</button>
+      </div>
+
+      <!-- Dashboard -->
+      <section id="tab-dashboard">
+        <div class="grid grid-3">
+          <div class="card kpi"><div>Ingresos totales</div><div id="kpiInc" class="kpi">—</div></div>
+          <div class="card kpi"><div>Gastos</div><div id="kpiExp" class="kpi">—</div></div>
+          <div class="card kpi"><div>Resultado neto</div><div id="kpiNet" class="kpi">—</div></div>
+        </div>
+        <div class="grid grid-2" style="margin-top:12px">
+          <div class="card">
+            <h2>Ingresos vs Gastos</h2>
+            <canvas id="ch1" height="140"></canvas>
+          </div>
+          <div class="card">
+            <h2>Beneficio neto e impuestos</h2>
+            <canvas id="ch2" height="140"></canvas>
+          </div>
+          <div class="card">
+            <h2>Horas extra acumuladas</h2>
+            <canvas id="ch3" height="140"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Employees -->
+      <section id="tab-employees" style="display:none">
+        <div class="grid grid-2">
+          <div class="card">
+            <h2>Acciones</h2>
+            <a class="btn" href="admin-employee-new.html">Crear empleado</a>
+          </div>
+          <div class="card">
+            <h2>Empleados</h2>
+            <table class="table" id="empTable">
+              <thead><tr><th>Email</th><th>Tarifa OT</th><th>Salario</th><th>Permisos</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Finance -->
+      <section id="tab-finance" style="display:none">
+        <div class="grid grid-2">
+          <div class="card">
+            <h2>Nuevo registro financiero</h2>
+            <div class="vertical">
+              <label>Mes (YYYY-MM)</label>
+              <input id="fMonth" class="input" placeholder="2025-12" />
+              <label>País</label>
+              <select id="fCountry" class="input"></select>
+              <label>Ingresos</label>
+              <input id="fInc" class="input" type="number" step="0.01" />
+              <label>Gastos</label>
+              <input id="fExp" class="input" type="number" step="0.01" />
+              <label>Salarios</label>
+              <input id="fSal" class="input" type="number" step="0.01" />
+              <button id="fSave" class="btn primary">Calcular y guardar</button>
+              <p class="help warning">“Los cálculos mostrados son orientativos y no sustituyen el asesoramiento fiscal profesional.”</p>
+              <pre id="fResult" class="small"></pre>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Histórico</h2>
+            <table class="table" id="fTable">
+              <thead><tr><th>Mes</th><th>País</th><th>Ingresos</th><th>Gastos</th><th>Salarios</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Expenses -->
+      <section id="tab-expenses" style="display:none">
+        <div class="card">
+          <h2>Revisión de gastos de empleados</h2>
+          
+          <table class="table" id="expTable">
+            <thead><tr><th>ID</th><th>Fecha</th><th>Empleado</th><th>Categoría</th><th>Importe</th><th>Estado</th><th>PDF</th><th>Acciones</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Solicitudes de jornada -->
+      <section id="tab-requests" style="display:none">
+        <div class="card">
+          <h2>Solicitudes de jornada pendientes</h2>
+          <table class="table" id="reqTable">
+            <thead><tr><th>Empleado</th><th>Fecha</th><th>Hora inicio</th><th>Hora fin</th><th>Solicitada</th><th>Acciones</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Vacations -->
+      <section id="tab-vacations" style="display:none">
+        <div class="card">
+          <h2>Solicitudes de vacaciones pendientes</h2>
+          <table class="table" id="vacTable">
+            <thead><tr><th>Empleado</th><th>Fecha inicio</th><th>Fecha fin</th><th>Días</th><th>Solicitada</th><th>Acciones</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Company -->
+      <section id="tab-company" style="display:none">
+        <div class="card">
+          <h2>Ubicación de la empresa (para control horario)</h2>
+          <div class="grid grid-3">
+            <div><label>Latitud</label><input id="cLat" class="input" /></div>
+            <div><label>Longitud</label><input id="cLng" class="input" /></div>
+            <div style="align-self:end"><button id="cSave" class="btn primary">Guardar</button></div>
+          </div>
+          <p class="small">Radio de validación para fichaje: 200 m.</p>
+        </div>
+      </section>
+
+      <footer>© TFM Empresas</footer>
+    </main>
+
+    <script type="module" src="js/admin.js"></script>
+  </body>
+</html>

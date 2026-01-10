@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TFM – Inicia sesión</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="index.html">TFM Empresas</a>
+    </nav>
+    <main class="hero">
+      <div class="card" style="width:min(92vw,480px)">
+        <h1 class="title">Inicia sesión</h1>
+        <p class="subtitle">Accede con tu correo y contraseña</p>
+        <div class="vertical" style="margin-top:12px">
+          <label>Email</label>
+          <input id="email" class="input" value="ceo@demo.com" />
+          <label>Contraseña</label>
+          <input id="password" class="input" type="password" value="demo123" />
+          <div class="actions">
+            <button id="loginBtn" class="btn primary">Entrar</button>
+            <button id="goRegister" class="btn" style="background:#eef2ff;border-color:#e5e7eb">Registrar nueva empresa</button>
+          </div>
+          <div class="small">
+            <a class="link" href="forgot.html">He olvidado mi contraseña</a>
+          </div>
+          <p class="help">Demo: <b>ceo@demo.com</b> (ADMIN) o <b>worker@demo.com</b> (WORKER) – pass: <b>demo123</b></p>
+        </div>
+      </div>
+    </main>
+    <script type="module">
+      async function api(path, opts={}){
+        const res = await fetch(path, { credentials:'include', headers:{ 'Content-Type':'application/json' }, ...opts })
+        const data = await res.json().catch(()=>null)
+        if(!res.ok) throw new Error(data?.error || 'Error')
+        return data
+      }
+      document.getElementById('loginBtn').addEventListener('click', async ()=>{
+        const email = document.getElementById('email').value.trim()
+        const password = document.getElementById('password').value.trim()
+        try{
+          const r = await api('api/auth/login', { method:'POST', body: JSON.stringify({ email, password }) })
+          if(r.user.role==='ADMIN') location.href='admin.html'
+          else location.href='employee.html'
+        }catch(e){ alert(e.message) }
+      })
+      document.getElementById('goRegister').addEventListener('click', ()=> location.href='register.html')
+    </script>
+  </body>
+</html>

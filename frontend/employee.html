@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TFM – Panel Empleado</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="employee.html">TFM Empresas</a>
+      <div class="actions">
+        <span id="who" class="small"></span>
+        <a class="btn" href="index.html">Salir</a>
+      </div>
+    </nav>
+    <main class="container">
+      <div class="tabs">
+        <button class="tab active" data-tab="dashboard">Dashboard</button>
+        <button class="tab" data-tab="time">Control horario</button>
+        <button class="tab" data-tab="tickets">Tickets</button>
+        <button class="tab" data-tab="vacations">Vacaciones</button>
+      </div>
+
+      <section id="tab-dashboard">
+        <div class="grid grid-3">
+          <div class="card kpi"><div>Gastos pendientes</div><div id="dPend" class="kpi">—</div></div>
+          <div class="card kpi"><div>Gastos aprobados</div><div id="dApproved" class="kpi">—</div></div>
+          <div class="card kpi"><div>Horas extra acumuladas</div><div id="dHours" class="kpi">—</div></div>
+        </div>
+        <div class="grid grid-3" style="margin-top:12px">
+          <div class="card kpi"><div>Vacaciones disponibles</div><div id="dVac" class="kpi">—</div></div>
+        </div>
+      </section>
+
+      <section id="tab-time" style="display:none">
+        <div class="card">
+          <h2>Fichaje con geolocalización</h2>
+          <div class="actions">
+            <button id="startBtn" class="btn primary">Iniciar jornada</button>
+            <button id="breakStartBtn" class="btn" disabled>Inicio descanso</button>
+            <button id="breakEndBtn" class="btn" disabled>Fin descanso</button>
+            <button id="endBtn" class="btn" disabled>Finalizar jornada</button>
+            <span id="geoMsg" class="small"></span>
+          </div>
+          <p class="help">Se solicitará la ubicación solo al iniciar y finalizar (radio válido 200 m respecto a la empresa).</p>
+        </div>
+        <div class="card">
+          <h2>Solicitar jornada</h2>
+          <div class="vertical">
+            <label>Día</label>
+            <input id="reqDate" type="date" class="input" />
+            <label>Hora de inicio</label>
+            <input id="reqStartTime" type="time" class="input" />
+            <label>Hora de fin</label>
+            <input id="reqEndTime" type="time" class="input" />
+            <button id="reqSave" class="btn primary">Solicitar jornada</button>
+            <p class="help">Solicita una jornada manual que será aprobada por el administrador.</p>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Mis jornadas</h2>
+          <table class="table">
+            <thead><tr><th>Fecha</th><th>Hora inicio</th><th>Inicio descanso</th><th>Fin descanso</th><th>Hora fin</th><th>Horas trabajadas</th><th>Horas extra</th></tr></thead>
+            <tbody id="tsBody"></tbody>
+          </table>
+          <hr/>
+          <div id="extraSummary" class="small"></div>
+        </div>
+        <div class="card">
+          <h2>Mis solicitudes pendientes</h2>
+          <table class="table">
+            <thead><tr><th>Fecha</th><th>Hora inicio</th><th>Hora fin</th><th>Estado</th><th>Razón</th></tr></thead>
+            <tbody id="reqBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-tickets" style="display:none">
+        <div class="grid grid-2">
+          <div class="card">
+            <h2>Nuevo ticket</h2>
+            <div class="vertical">
+              <label>Importe</label>
+              <input id="tAmount" type="number" step="0.01" class="input" placeholder="0.00" />
+              <label>Categoría</label>
+              <select id="tCat" class="input">              </select>
+              <label>Archivo (imagen/PDF)</label>
+              <input id="tFile" type="file" accept="image/*,application/pdf" capture="environment" class="input" />
+              <button id="tSave" class="btn primary">Subir ticket</button>
+              <p class="help">En móvil puedes usar la cámara. Máx. 10MB.</p>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Mis tickets</h2>
+            <table class="table" id="tTable">
+              <thead><tr><th>Fecha</th><th>Categoría</th><th>Importe</th><th>Tipo</th><th>Estado</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-vacations" style="display:none">
+        <div class="card">
+          <h2>Solicitar vacaciones</h2>
+          <div class="vertical">
+            <label>Fecha de inicio</label>
+            <input id="vacStart" type="date" class="input" />
+            <label>Fecha de fin</label>
+            <input id="vacEnd" type="date" class="input" />
+            <button id="vacSave" class="btn primary">Solicitar vacaciones</button>
+            <p class="help">Selecciona el rango de fechas para tus vacaciones. El administrador revisará tu solicitud.</p>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Mis solicitudes de vacaciones</h2>
+          <table class="table">
+            <thead><tr><th>Fecha inicio</th><th>Fecha fin</th><th>Días</th><th>Estado</th><th>Razón</th></tr></thead>
+            <tbody id="vacBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer>© TFM Empresas</footer>
+    </main>
+    <script type="module" src="js/employee.js"></script>
+  </body>
+</html>

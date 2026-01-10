@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registrar empresa</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <nav class="nav"><a href="index.html">TFM Empresas</a></nav>
+    <main class="hero">
+      <div class="card" style="width:min(92vw,560px)">
+        <h1 class="title">Registrar nueva empresa</h1>
+        <div class="grid grid-2" style="margin-top:12px">
+          <div class="vertical">
+            <label>Nombre de la empresa</label>
+            <input id="name" class="input" />
+            <label>Dirección fiscal</label>
+            <input id="fiscal" class="input" placeholder="Madrid, España / Florida, Estados Unidos" />
+            <label>CIF/NIF</label>
+            <input id="taxid" class="input" placeholder="B12345678 / 12345678A" />
+            <label>Teléfono (opcional)</label>
+            <input id="phone" class="input" placeholder="+34 600 000 000" />
+          </div>
+          <div class="vertical">
+            <label>Email Admin (usuario)</label>
+            <input id="email" class="input" placeholder="admin@empresa.com" />
+            <label>Contraseña Admin</label>
+            <input id="password" class="input" type="password" />
+            <label>Repite contraseña</label>
+            <input id="password2" class="input" type="password" />
+          </div>
+        </div>
+        <div class="actions" style="margin-top:12px">
+          <button id="regBtn" class="btn primary">Crear empresa</button>
+          <p id="msg" class="small"></p>
+        </div>
+      </div>
+    </main>
+    <script type="module">
+      async function api(path, opts={}){
+        const res = await fetch(path, { credentials:'include', headers:{ 'Content-Type':'application/json' }, ...opts })
+        const data = await res.json().catch(()=>null)
+        if(!res.ok) throw new Error(data?.error || 'Error')
+        return data
+      }
+      document.getElementById('regBtn').addEventListener('click', async ()=>{
+        const name = document.getElementById('name').value.trim()
+        const fiscal_address = document.getElementById('fiscal').value.trim()
+        const tax_id = document.getElementById('taxid').value.trim()
+        const phone = document.getElementById('phone').value.trim()
+        const email = document.getElementById('email').value.trim()
+        const password = document.getElementById('password').value
+        const password2 = document.getElementById('password2').value
+        if(!name || !email || !password || password!==password2) return alert('Revisa los datos')
+        try{
+          await api('api/auth/register_company', { method:'POST', body: JSON.stringify({ name, fiscal_address, tax_id, phone, email, password }) })
+          document.getElementById('msg').textContent = 'Empresa creada. Ya puedes iniciar sesión como Admin.'
+        }catch(e){ alert(e.message) }
+      })
+    </script>
+  </body>
+</html>

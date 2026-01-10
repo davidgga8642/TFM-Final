@@ -1,0 +1,15 @@
+node_modules/
+*.sqlite
+*.sqlite3
+database.sqlite
+sessions.sqlite
+.DS_Store
+.env
+*.log
+uploads/
+.vscode/
+.idea/
+*.swp
+*.swo
+dist/
+build/

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Restablecer contraseña</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <nav class="nav"><a href="index.html">TFM Empresas</a></nav>
+    <main class="hero">
+      <div class="card" style="width:min(92vw,480px)">
+        <h1 class="title">Restablecer contraseña</h1>
+        <p class="subtitle">Introduce tu nueva contraseña</p>
+        <div class="vertical" style="margin-top:12px">
+          <label>Nueva contraseña</label>
+          <input id="p1" class="input" type="password" />
+          <label>Repetir contraseña</label>
+          <input id="p2" class="input" type="password" />
+          <button id="saveBtn" class="btn primary">Guardar</button>
+          <p id="msg" class="small"></p>
+        </div>
+      </div>
+    </main>
+    <script type="module">
+      function token(){ return new URL(location.href).searchParams.get('token') }
+      async function api(path, opts={}){
+        const res = await fetch(path, { credentials:'include', headers:{ 'Content-Type':'application/json' }, ...opts })
+        const data = await res.json().catch(()=>null)
+        if(!res.ok) throw new Error(data?.error || 'Error')
+        return data
+      }
+      document.getElementById('saveBtn').addEventListener('click', async ()=>{
+        const p1 = document.getElementById('p1').value, p2 = document.getElementById('p2').value
+        if(!p1 || p1!==p2) return alert('Las contraseñas no coinciden')
+        const t = token(); if(!t) return alert('Token inválido')
+        try{
+          await api('api/auth/reset', { method:'POST', body: JSON.stringify({ token: t, password: p1 }) })
+          document.getElementById('msg').textContent = 'Contraseña actualizada. Ya puedes iniciar sesión.'
+        }catch(e){ alert(e.message) }
+      })
+    </script>
+  </body>
+</html>

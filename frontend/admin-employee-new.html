@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Crear empleado</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="admin.html">TFM Empresas</a>
+      <div class="actions"><a class="btn" href="admin.html">Volver</a></div>
+    </nav>
+    <main class="container">
+      <div class="card">
+        <h1 class="title">Crear nuevo empleado</h1>
+        <div class="grid grid-2">
+          <div class="vertical">
+            <label>Email (usuario)</label>
+            <input id="empEmail" class="input" placeholder="email@empresa.com" />
+            <label>Contraseña</label>
+            <input id="empPass" class="input" type="password" placeholder="••••••••" />
+            <label>DNI</label>
+            <input id="empDNI" class="input" placeholder="12345678A" />
+            <label>Fecha de nacimiento</label>
+            <input id="empBirth" class="input" type="date" />
+            <label>Teléfono</label>
+            <input id="empPhone" class="input" placeholder="+34 600 000 000" />
+            <label>Email de contacto (opcional)</label>
+            <input id="empContactEmail" class="input" placeholder="contacto@empresa.com" />
+          </div>
+          <div class="vertical">
+            <label>Tarifa horas extra (€/h)</label>
+            <input id="empOT" class="input" type="number" step="0.01" value="15" />
+            <label>Salario (€ / mes)</label>
+            <input id="empSalary" class="input" type="number" step="0.01" value="0" />
+            <label>Horas por día</label>
+            <input id="empDaily" class="input" type="number" step="0.1" value="8" />
+            <label>Horas por semana</label>
+            <input id="empWeekly" class="input" type="number" step="0.1" value="40" />
+            <label>Vacaciones / año (días)</label>
+            <input id="empVac" class="input" type="number" step="1" value="22" />
+            <label>Cargo</label>
+            <input id="empPosition" class="input" placeholder="Cargo" />
+            <label>Tipo de contrato</label>
+            <input id="empContract" class="input" placeholder="Indefinido / Temporal / Prácticas..." />
+            <label>Pagas / año</label>
+            <input id="empPays" class="input" type="number" step="1" value="12" />
+            <label>Permisos de gastos</label>
+            <div class="actions">
+              <label><input type="checkbox" id="empAllowDiet" checked /> Dietas</label>
+              <label><input type="checkbox" id="empAllowTrans" checked /> Transporte</label>
+              <label><input type="checkbox" id="empAllowLodging" checked /> Alojamiento</label>
+            </div>
+          </div>
+        </div>
+        <div class="actions" style="margin-top:12px">
+          <button id="createEmp" class="btn primary">Crear empleado</button>
+          <p id="msg" class="small"></p>
+        </div>
+      </div>
+    </main>
+    <script type="module">
+      async function api(path, opts={}){
+        const res = await fetch(path, { credentials:'include', headers:{ 'Content-Type':'application/json' }, ...opts })
+        const data = await res.json().catch(()=>null)
+        if(!res.ok) throw new Error(data?.error || 'Error')
+        return data
+      }
+      document.getElementById('createEmp').addEventListener('click', async ()=>{
+        const body = {
+          email: document.getElementById('empEmail').value.trim(),
+          password: document.getElementById('empPass').value,
+          overtime_rate: Number(document.getElementById('empOT').value),
+          allow_diets: document.getElementById('empAllowDiet').checked,
+          allow_transport: document.getElementById('empAllowTrans').checked,
+          allow_lodging: document.getElementById('empAllowLodging').checked,
+          salary: Number(document.getElementById('empSalary').value),
+          daily_hours: Number(document.getElementById('empDaily').value),
+          weekly_hours: Number(document.getElementById('empWeekly').value),
+          vacation_days: Number(document.getElementById('empVac').value),
+          dni: document.getElementById('empDNI').value,
+          birthdate: document.getElementById('empBirth').value,
+          phone: document.getElementById('empPhone').value,
+          contact_email: document.getElementById('empContactEmail').value,
+          position: document.getElementById('empPosition').value,
+          contract_type: document.getElementById('empContract').value,
+          pay_installments: Number(document.getElementById('empPays').value)
+        }
+        if(!body.email || !body.password) return alert('Email y contraseña requeridos')
+        try{
+          await api('api/employees', { method:'POST', body: JSON.stringify(body) })
+          document.getElementById('msg').textContent = 'Empleado creado correctamente.'
+        }catch(e){ alert(e.message) }
+      })
+    </script>
+  </body>
+</html>

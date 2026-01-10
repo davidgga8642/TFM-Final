@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>He olvidado mi contraseña</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <nav class="nav"><a href="index.html">TFM Empresas</a></nav>
+    <main class="hero">
+      <div class="card" style="width:min(92vw,480px)">
+        <h1 class="title">¿Has olvidado tu contraseña?</h1>
+        <p class="subtitle">Introduce tu correo y te enviaremos un enlace para restablecerla.</p>
+        <div class="vertical" style="margin-top:12px">
+          <label>Email</label>
+          <input id="email" class="input" placeholder="tucorreo@empresa.com" />
+          <button id="sendBtn" class="btn primary">Enviar enlace</button>
+          <p id="msg" class="small"></p>
+        </div>
+      </div>
+    </main>
+    <script type="module">
+      async function api(path, opts={}){
+        const res = await fetch(path, { credentials:'include', headers:{ 'Content-Type':'application/json' }, ...opts })
+        const data = await res.json().catch(()=>null)
+        if(!res.ok) throw new Error(data?.error || 'Error')
+        return data
+      }
+      document.getElementById('sendBtn').addEventListener('click', async ()=>{
+        const email = document.getElementById('email').value.trim()
+        if(!email) return alert('Introduce tu email')
+        try{
+          const r = await api('api/auth/forgot', { method:'POST', body: JSON.stringify({ email }) })
+          document.getElementById('msg').textContent = 'Si el correo existe, hemos enviado un enlace. Vista previa: ' + (r.preview_url || 'revisa tu buzón')
+        }catch(e){ alert(e.message) }
+      })
+    </script>
+  </body>
+</html>
