@@ -28,7 +28,7 @@ auth.post('/forgot', async (req,res)=>{
   const { email } = req.body || {}
   if(!email) return res.status(400).json({ error: 'Email requerido' })
   const user = await q.get(`SELECT * FROM users WHERE email=?`, [email])
-  if(!user) return res.json({ ok:true }) // no revelamos
+  if(!user) return res.status(404).json({ error: 'No existe usuario con ese email' })
   const token = crypto.randomBytes(24).toString('hex')
   const expires_at = new Date(Date.now()+1000*60*60).toISOString()
   await q.run(`INSERT INTO password_resets(user_id,token,expires_at) VALUES(?,?,?)`, [user.id, token, expires_at])

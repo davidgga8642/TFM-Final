@@ -32,8 +32,16 @@
         if(!email) return alert('Introduce tu email')
         try{
           const r = await api('api/auth/forgot', { method:'POST', body: JSON.stringify({ email }) })
-          document.getElementById('msg').textContent = 'Si el correo existe, hemos enviado un enlace. Vista previa: ' + (r.preview_url || 'revisa tu buzón')
-        }catch(e){ alert(e.message) }
+          document.getElementById('msg').textContent = '✅ Enlace enviado. Revisa tu correo o haz clic en el siguiente: ' + (r.preview_url || 'reset.html')
+          document.getElementById('msg').style.color = 'green'
+        }catch(e){ 
+          if(e.message.includes('No existe usuario')) {
+            alert('❌ No existe usuario con ese email')
+          } else {
+            alert('Error: ' + e.message)
+          }
+          document.getElementById('msg').textContent = ''
+        }
       })
     </script>
   </body>

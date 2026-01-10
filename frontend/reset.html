@@ -30,14 +30,29 @@
         if(!res.ok) throw new Error(data?.error || 'Error')
         return data
       }
+      
+      // Validar token al cargar
+      if(!token()){
+        document.getElementById('msg').textContent = '❌ Token inválido o expirado'
+        document.getElementById('msg').style.color = 'red'
+        document.getElementById('saveBtn').disabled = true
+      }
+      
       document.getElementById('saveBtn').addEventListener('click', async ()=>{
         const p1 = document.getElementById('p1').value, p2 = document.getElementById('p2').value
-        if(!p1 || p1!==p2) return alert('Las contraseñas no coinciden')
+        if(!p1) return alert('Introduce una contraseña')
+        if(p1.length < 6) return alert('La contraseña debe tener al menos 6 caracteres')
+        if(p1!==p2) return alert('Las contraseñas no coinciden')
         const t = token(); if(!t) return alert('Token inválido')
         try{
           await api('api/auth/reset', { method:'POST', body: JSON.stringify({ token: t, password: p1 }) })
-          document.getElementById('msg').textContent = 'Contraseña actualizada. Ya puedes iniciar sesión.'
-        }catch(e){ alert(e.message) }
+          document.getElementById('msg').textContent = '✅ Contraseña actualizada correctamente. Redirigiendo a login...'
+          document.getElementById('msg').style.color = 'green'
+          document.getElementById('p1').disabled = true
+          document.getElementById('p2').disabled = true
+          document.getElementById('saveBtn').disabled = true
+          setTimeout(()=> location.href = 'index.html', 2000)
+        }catch(e){ alert('❌ Error: ' + e.message) }
       })
     </script>
   </body>
