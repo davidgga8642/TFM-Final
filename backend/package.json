@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "mock:generate": "node scripts/generate-mock.js",
+    "mock:restore": "node scripts/restore-mock.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

@@ -204,6 +204,17 @@ David Gómez García-Arias
 
 ## 📋 Changelog
 
+### [11-02-2026] David
+- ✅ **Base de datos mock para demo**
+	- Generacion reproducible de demo.sqlite y demo.sql en backend/mock
+	- Dataset ampliado: 25 empleados con datos variados (salario, puesto, permisos, vacaciones, activo/inactivo)
+	- 2 admins demo con credenciales distintas
+	- Contraseñas distintas por empleado
+	- Archivo de credenciales generado en backend/mock/credentials.txt
+	- Scripts: npm run mock:generate y npm run mock:restore
+	- Crea uploads de ejemplo con facturas y tickets demo
+- 👤 **Realizado por David**
+
 ### [05-02-2026] David
 - ✅ **Exportación de datos de empleados**
   - Botón "📊 Extraer info" en sección de empleados
