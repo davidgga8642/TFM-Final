@@ -102,3 +102,36 @@ main{ padding-top:12px; }
 .fc-daygrid-day-number{
   padding:4px;
 }
+
+/* Responsive */
+@media (max-width: 1024px){
+  .grid-3{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .container{ padding:14px; }
+}
+
+@media (max-width: 768px){
+  .container{ padding:12px; }
+  .nav{ padding:10px 12px; gap:10px; flex-wrap:wrap; }
+  .grid-2,
+  .grid-3,
+  .grid-auto{ grid-template-columns: 1fr; }
+  .tabs{ overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px; }
+  .tab{ white-space:nowrap; flex:0 0 auto; }
+  .title{ font-size:24px; }
+  .kpi{ font-size:22px; }
+  .table{ display:block; width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .table th,
+  .table td{ white-space:nowrap; }
+  .modal-content{ width:min(92vw, 560px); padding:16px; }
+  #vacationCalendar{ min-height:420px; }
+  .fc .fc-toolbar{ gap:8px; }
+  .fc .fc-toolbar.fc-header-toolbar{ flex-direction:column; align-items:flex-start; }
+}
+
+@media (max-width: 480px){
+  .nav{ flex-direction:column; align-items:flex-start; }
+  .actions{ width:100%; }
+  .actions .btn{ flex:1 1 auto; }
+  .title{ font-size:22px; }
+  .card{ padding:14px; }
+}
