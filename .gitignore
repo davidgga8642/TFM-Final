@@ -13,3 +13,8 @@ uploads/
 *.swo
 dist/
 build/
+
+# Permitir dataset mock para despliegues demo (p.ej. Render sin disco persistente)
+!backend/mock/demo.sqlite
+!backend/mock/demo.sql
+!backend/mock/credentials.txt

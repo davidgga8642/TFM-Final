@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "start:render": "node scripts/start-render.js",
     "dev": "node server.js",
     "mock:generate": "node scripts/generate-mock.js",
     "mock:restore": "node scripts/restore-mock.js"
