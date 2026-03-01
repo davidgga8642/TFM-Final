@@ -44,7 +44,12 @@ npm install
 npm start
 ```
 
-4. Acceder a la aplicación:
+4. Ejecutar tests:
+```bash
+npm test
+```
+
+5. Acceder a la aplicación:
 ```
 http://localhost:3000
 ```
